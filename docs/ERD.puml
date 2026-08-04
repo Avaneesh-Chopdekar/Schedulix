@@ -1,0 +1,107 @@
+@startuml
+
+hide circle
+skinparam linetype ortho
+
+entity User {
+*user_id : PK
+username
+password
+email
+role_id : FK
+}
+
+entity Role{
+*role_id : PK
+role_name
+}
+
+entity Department{
+*department_id : PK
+name
+}
+
+entity Teacher{
+*teacher_id : PK
+department_id : FK
+name
+email
+}
+
+entity Program{
+*program_id : PK
+department_id : FK
+name
+}
+
+entity Semester{
+*semester_id : PK
+program_id : FK
+number
+}
+
+entity Subject{
+*subject_id : PK
+semester_id : FK
+name
+credits
+}
+
+entity TeacherSubject{
+*teacher_subject_id : PK
+teacher_id : FK
+subject_id : FK
+}
+
+entity Classroom{
+*room_id : PK
+room_number
+capacity
+type
+}
+
+entity TimeSlot{
+*slot_id : PK
+day
+start_time
+end_time
+}
+
+entity Timetable{
+*timetable_id : PK
+semester_id : FK
+academic_year
+}
+
+entity Lecture{
+*lecture_id : PK
+teacher_id : FK
+subject_id : FK
+room_id : FK
+slot_id : FK
+timetable_id : FK
+}
+
+Role ||--o{ User
+
+Department ||--o{ Teacher
+Department ||--o{ Program
+
+Program ||--o{ Semester
+
+Semester ||--o{ Subject
+
+Teacher ||--o{ TeacherSubject
+Subject ||--o{ TeacherSubject
+
+Timetable ||--o{ Lecture
+
+TimeSlot ||--o{ Lecture
+
+Classroom ||--o{ Lecture
+
+Teacher ||--o{ Lecture
+
+Subject ||--o{ Lecture
+
+@enduml
