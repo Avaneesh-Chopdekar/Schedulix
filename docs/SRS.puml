@@ -1,0 +1,41 @@
+@startuml
+title Schedulix - System Architecture
+
+skinparam componentStyle rectangle
+
+actor Admin
+actor Faculty
+actor Student
+
+package "Frontend" {
+    [React Application]
+}
+
+package "Backend (Core PHP REST APIs)" {
+
+    [User Service]
+
+    [Academic Service]
+
+    [Resource Service]
+
+    [Timetable Service]
+}
+
+database "MySQL Database"
+
+Admin --> [React Application]
+Faculty --> [React Application]
+Student --> [React Application]
+
+[React Application] --> [User Service]
+[React Application] --> [Academic Service]
+[React Application] --> [Resource Service]
+[React Application] --> [Timetable Service]
+
+[User Service] --> "MySQL Database"
+[Academic Service] --> "MySQL Database"
+[Resource Service] --> "MySQL Database"
+[Timetable Service] --> "MySQL Database"
+
+@enduml
