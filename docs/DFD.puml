@@ -1,0 +1,42 @@
+@startuml
+
+left to right direction
+
+actor Admin
+actor Faculty
+actor Student
+
+rectangle "Schedulix System" {
+
+component "Authentication"
+
+component "Academic Management"
+
+component "Resource Management"
+
+component "Timetable Management"
+
+}
+
+database MySQL
+
+Admin --> Authentication
+Faculty --> Authentication
+Student --> Authentication
+
+Admin --> "Academic Management"
+
+Admin --> "Resource Management"
+
+Admin --> "Timetable Management"
+
+Faculty --> "Timetable Management"
+
+Student --> "Timetable Management"
+
+Authentication --> MySQL
+"Academic Management" --> MySQL
+"Resource Management" --> MySQL
+"Timetable Management" --> MySQL
+
+@enduml
