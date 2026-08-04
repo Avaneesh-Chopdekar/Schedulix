@@ -1,0 +1,49 @@
+@startuml
+
+package React {
+
+[Login]
+
+[Dashboard]
+
+[Teacher Module]
+
+[Subject Module]
+
+[Timetable Module]
+
+}
+
+package PHP {
+
+[Authentication API]
+
+[Academic API]
+
+[Resource API]
+
+[Timetable API]
+
+}
+
+database MySQL
+
+[Login] --> [Authentication API]
+
+[Dashboard] --> [Academic API]
+
+[Teacher Module] --> [Academic API]
+
+[Subject Module] --> [Academic API]
+
+[Timetable Module] --> [Timetable API]
+
+[Authentication API] --> MySQL
+
+[Academic API] --> MySQL
+
+[Resource API] --> MySQL
+
+[Timetable API] --> MySQL
+
+@enduml
