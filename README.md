@@ -1,4 +1,3 @@
-```markdown
 # Schedulix
 
 **Schedulix** is a constraint-based smart college timetable management system designed to simplify the process of creating and managing academic timetables. The application helps educational institutions reduce manual scheduling efforts while preventing common conflicts such as faculty overlaps, classroom clashes, and invalid resource allocations.
@@ -273,5 +272,3 @@ This project is developed for academic purposes as part of the MCA curriculum.
 * PHP
 * MySQL
 
-```
-```
