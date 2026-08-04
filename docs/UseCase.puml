@@ -1,0 +1,44 @@
+@startuml
+
+left to right direction
+
+actor Admin
+actor Faculty
+actor Student
+
+rectangle Schedulix {
+
+usecase "Login" as U1
+
+usecase "Manage Teachers" as U2
+
+usecase "Manage Subjects" as U3
+
+usecase "Manage Classrooms" as U4
+
+usecase "Generate Timetable" as U5
+
+usecase "Detect Conflicts" as U6
+
+usecase "View Timetable" as U7
+
+usecase "Manage Availability" as U8
+
+}
+
+Admin --> U1
+Admin --> U2
+Admin --> U3
+Admin --> U4
+Admin --> U5
+
+Faculty --> U1
+Faculty --> U7
+Faculty --> U8
+
+Student --> U1
+Student --> U7
+
+U5 ..> U6 : <<include>>
+
+@enduml
