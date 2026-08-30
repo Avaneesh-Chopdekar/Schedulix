@@ -1,5 +1,18 @@
-import type { PropsWithChildren } from "react";
+import { Outlet } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
+// import Navbar from "../components/Navbar";
 
-export default function DashboardLayout({ children }: PropsWithChildren) {
-  return <>{children}</>;
+function DashboardLayout() {
+  return (
+    <>
+      <Sidebar />
+      {/*<Navbar />*/}
+
+      <main>
+        <Outlet />
+      </main>
+    </>
+  );
 }
+
+export default DashboardLayout;
