@@ -132,3 +132,284 @@ export const classrooms = [
     status: "Available",
   },
 ];
+
+export const timeSlots = [
+  {
+    id: 1,
+    day: "Monday",
+    slotNumber: 1,
+    startTime: "09:00",
+    endTime: "10:00",
+  },
+  {
+    id: 2,
+    day: "Monday",
+    slotNumber: 2,
+    startTime: "10:00",
+    endTime: "11:00",
+  },
+  {
+    id: 3,
+    day: "Monday",
+    slotNumber: 3,
+    startTime: "11:15",
+    endTime: "12:15",
+  },
+  {
+    id: 4,
+    day: "Tuesday",
+    slotNumber: 1,
+    startTime: "09:00",
+    endTime: "10:00",
+  },
+  {
+    id: 5,
+    day: "Tuesday",
+    slotNumber: 2,
+    startTime: "10:00",
+    endTime: "11:00",
+  },
+  {
+    id: 6,
+    day: "Wednesday",
+    slotNumber: 1,
+    startTime: "09:00",
+    endTime: "10:00",
+  },
+  {
+    id: 7,
+    day: "Thursday",
+    slotNumber: 1,
+    startTime: "09:00",
+    endTime: "10:00",
+  },
+  {
+    id: 8,
+    day: "Friday",
+    slotNumber: 1,
+    startTime: "09:00",
+    endTime: "10:00",
+  },
+];
+
+export const timetableEntries = [
+  {
+    id: 1,
+    day: "Monday",
+    slotNumber: 1,
+    startTime: "09:00",
+    endTime: "10:00",
+
+    subjectCode: "CS301",
+    subjectName: "Database Management Systems",
+
+    teacher: "Rahul Sharma",
+    room: "301",
+
+    semester: 3,
+    section: "A",
+
+    type: "Theory",
+    hasConflict: false,
+  },
+
+  {
+    id: 2,
+    day: "Monday",
+    slotNumber: 2,
+    startTime: "10:00",
+    endTime: "11:00",
+
+    subjectCode: "CS302",
+    subjectName: "Object Oriented Programming",
+
+    teacher: "Priya Shah",
+    room: "302",
+
+    semester: 3,
+    section: "A",
+
+    type: "Theory",
+    hasConflict: false,
+  },
+
+  {
+    id: 3,
+    day: "Monday",
+    slotNumber: 3,
+    startTime: "11:15",
+    endTime: "12:15",
+
+    subjectCode: "CS304",
+    subjectName: "DBMS Laboratory",
+
+    teacher: "Amit Patel",
+    room: "LAB-1",
+
+    semester: 3,
+    section: "A",
+
+    type: "Practical",
+    hasConflict: false,
+  },
+
+  {
+    id: 4,
+    day: "Tuesday",
+    slotNumber: 1,
+    startTime: "09:00",
+    endTime: "10:00",
+
+    subjectCode: "CS305",
+    subjectName: "Computer Networks",
+
+    teacher: "Sneha Mehta",
+    room: "401",
+
+    semester: 3,
+    section: "A",
+
+    type: "Theory",
+    hasConflict: false,
+  },
+
+  {
+    id: 5,
+    day: "Tuesday",
+    slotNumber: 2,
+    startTime: "10:00",
+    endTime: "11:00",
+
+    subjectCode: "CS303",
+    subjectName: "Web Development",
+
+    teacher: "Rahul Sharma",
+    room: "301",
+
+    semester: 3,
+    section: "A",
+
+    type: "Theory",
+    hasConflict: false,
+  },
+
+  {
+    id: 6,
+    day: "Wednesday",
+    slotNumber: 1,
+    startTime: "09:00",
+    endTime: "10:00",
+
+    subjectCode: "CS302",
+    subjectName: "Object Oriented Programming",
+
+    teacher: "Priya Shah",
+    room: "302",
+
+    semester: 3,
+    section: "A",
+
+    type: "Theory",
+    hasConflict: false,
+  },
+
+  {
+    id: 7,
+    day: "Wednesday",
+    slotNumber: 2,
+    startTime: "10:00",
+    endTime: "11:00",
+
+    subjectCode: "CS301",
+    subjectName: "Database Management Systems",
+
+    teacher: "Rahul Sharma",
+    room: "301",
+
+    semester: 3,
+    section: "A",
+
+    type: "Theory",
+    hasConflict: false,
+  },
+
+  {
+    id: 8,
+    day: "Thursday",
+    slotNumber: 1,
+    startTime: "09:00",
+    endTime: "10:00",
+
+    subjectCode: "CS303",
+    subjectName: "Web Development",
+
+    teacher: "Rahul Sharma",
+    room: "401",
+
+    semester: 3,
+    section: "A",
+
+    type: "Theory",
+    hasConflict: false,
+  },
+
+  {
+    id: 9,
+    day: "Thursday",
+    slotNumber: 2,
+    startTime: "10:00",
+    endTime: "11:00",
+
+    subjectCode: "CS305",
+    subjectName: "Computer Networks",
+
+    teacher: "Sneha Mehta",
+    room: "301",
+
+    semester: 3,
+    section: "A",
+
+    type: "Theory",
+    hasConflict: false,
+  },
+
+  {
+    id: 10,
+    day: "Friday",
+    slotNumber: 1,
+    startTime: "09:00",
+    endTime: "10:00",
+
+    subjectCode: "CS301",
+    subjectName: "Database Management Systems",
+
+    teacher: "Rahul Sharma",
+    room: "301",
+
+    semester: 3,
+    section: "A",
+
+    type: "Theory",
+    hasConflict: false,
+  },
+
+  {
+    id: 11,
+    day: "Friday",
+    slotNumber: 2,
+    startTime: "10:00",
+    endTime: "11:00",
+
+    subjectCode: "CS304",
+    subjectName: "DBMS Laboratory",
+
+    teacher: "Amit Patel",
+    room: "LAB-1",
+
+    semester: 3,
+    section: "A",
+
+    type: "Practical",
+    hasConflict: false,
+  },
+];

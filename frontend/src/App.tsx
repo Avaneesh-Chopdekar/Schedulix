@@ -15,6 +15,7 @@ import AddSubject from "./pages/admin/AddSubject";
 import Classrooms from "./pages/admin/Classrooms";
 import AddClassroom from "./pages/admin/AddClassroom";
 import TimeSlots from "./pages/admin/TimeSlots";
+import AddTimeSlot from "./pages/admin/AddTimeSlot";
 import Timetable from "./pages/admin/Timetable";
 
 // Faculty
@@ -55,9 +56,19 @@ function App() {
 
         <Route path="classrooms/add" element={<AddClassroom />} />
 
+        <Route path="classrooms/edit/:id" element={<AddClassroom />} />
+
         <Route path="timeslots" element={<TimeSlots />} />
 
+        <Route path="timeslots/add" element={<AddTimeSlot />} />
+
+        <Route path="timeslots/edit/:id" element={<AddTimeSlot />} />
+
         <Route path="timetable" element={<Timetable />} />
+
+        <Route path="timetable/edit/:id" element={<Timetable />} />
+
+        {/*<Route path="timetable/edit/:id" element={<EditTimetableEntry />} />*/}
       </Route>
 
       {/* ================= FACULTY ================= */}
