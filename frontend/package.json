@@ -10,7 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "lucide-react": "^1.37.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fontsource/roboto": "^5.3.0",
+    "@mui/icons-material": "^9.4.0",
+    "@mui/material": "^9.4.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-hook-form": "^7.87.0",
