@@ -47,6 +47,8 @@ function App() {
 
         <Route path="subjects/add" element={<AddSubject />} />
 
+        <Route path="subjects/edit/:id" element={<AddSubject />} />
+
         <Route path="classrooms" element={<Classrooms />} />
 
         <Route path="classrooms/add" element={<AddClassroom />} />
