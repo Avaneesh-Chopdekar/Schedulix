@@ -1,33 +1,115 @@
-import { List, ListItemButton, ListItemText } from "@mui/material";
-import { Link } from "react-router-dom";
+import {
+  Dashboard,
+  People,
+  MenuBook,
+  MeetingRoom,
+  AccessTime,
+  CalendarMonth,
+  Logout,
+} from "@mui/icons-material";
+
+import {
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+
+import { NavLink } from "react-router-dom";
+
+const drawerWidth = 250;
+
+const menuItems = [
+  {
+    label: "Dashboard",
+    path: "/admin/dashboard",
+    icon: <Dashboard />,
+  },
+  {
+    label: "Teachers",
+    path: "/admin/teachers",
+    icon: <People />,
+  },
+  {
+    label: "Subjects",
+    path: "/admin/subjects",
+    icon: <MenuBook />,
+  },
+  {
+    label: "Classrooms",
+    path: "/admin/classrooms",
+    icon: <MeetingRoom />,
+  },
+  {
+    label: "Time Slots",
+    path: "/admin/timeslots",
+    icon: <AccessTime />,
+  },
+  {
+    label: "Timetable",
+    path: "/admin/timetable",
+    icon: <CalendarMonth />,
+  },
+];
 
 function Sidebar() {
   return (
-    <List>
-      <ListItemButton component={Link} to="/admin/dashboard">
-        <ListItemText primary="Dashboard" />
-      </ListItemButton>
+    <Drawer
+      variant="permanent"
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
 
-      <ListItemButton component={Link} to="/admin/teachers">
-        <ListItemText primary="Teachers" />
-      </ListItemButton>
+        "& .MuiDrawer-paper": {
+          width: drawerWidth,
+          boxSizing: "border-box",
+        },
+      }}
+    >
+      <Toolbar>
+        <Typography variant="h6" style={{ fontWeight: "bold" }}>
+          Schedulix
+        </Typography>
+      </Toolbar>
 
-      <ListItemButton component={Link} to="/admin/subjects">
-        <ListItemText primary="Subjects" />
-      </ListItemButton>
+      <List sx={{ px: 1 }}>
+        {menuItems.map((item) => (
+          <ListItemButton
+            key={item.path}
+            component={NavLink}
+            to={item.path}
+            sx={{
+              borderRadius: 2,
+              mb: 0.5,
 
-      <ListItemButton component={Link} to="/admin/classrooms">
-        <ListItemText primary="Classrooms" />
-      </ListItemButton>
+              "&.active": {
+                backgroundColor: "action.selected",
+              },
+            }}
+          >
+            <ListItemIcon>{item.icon}</ListItemIcon>
 
-      <ListItemButton component={Link} to="/admin/timeslots">
-        <ListItemText primary="Time Slots" />
-      </ListItemButton>
+            <ListItemText primary={item.label} />
+          </ListItemButton>
+        ))}
 
-      <ListItemButton component={Link} to="/admin/timetable">
-        <ListItemText primary="Timetable" />
-      </ListItemButton>
-    </List>
+        <ListItemButton
+          sx={{
+            borderRadius: 2,
+            mt: 2,
+          }}
+        >
+          <ListItemIcon>
+            <Logout />
+          </ListItemIcon>
+
+          <ListItemText primary="Logout" />
+        </ListItemButton>
+      </List>
+    </Drawer>
   );
 }
 

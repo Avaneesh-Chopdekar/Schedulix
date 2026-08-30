@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import DashboardLayout from "./layouts/DashboardLayout";
 
 // Public pages
 import Home from "./pages/Home";
@@ -35,7 +36,7 @@ function App() {
 
       {/* ================= ADMIN ================= */}
 
-      <Route path="/admin">
+      <Route path="/admin" element={<DashboardLayout />}>
         <Route path="dashboard" element={<AdminDashboard />} />
 
         <Route path="teachers" element={<Teachers />} />
