@@ -43,6 +43,8 @@ function App() {
 
         <Route path="teachers/add" element={<AddTeacher />} />
 
+        <Route path="teachers/edit/:id" element={<AddTeacher />} />
+
         <Route path="subjects" element={<Subjects />} />
 
         <Route path="subjects/add" element={<AddSubject />} />
