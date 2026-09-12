@@ -14,4 +14,6 @@ $app = AppFactory::create();
 
 require __DIR__ . "/routes.php";
 
+$app->addErrorMiddleware(true, true, true);
+
 $app->run();

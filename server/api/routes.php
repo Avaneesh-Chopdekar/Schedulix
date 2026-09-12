@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 require_once __DIR__ . "/../controllers/DepartmentController.php";
 
+require_once __DIR__ . "/../controllers/SchedulingConstraintController.php";
+
 $app->get("/api/health", function ($request, $response) {
     $response->getBody()->write(
         json_encode([
@@ -20,3 +22,9 @@ $app->get("/api/health", function ($request, $response) {
 $app->get("/api/departments", [DepartmentController::class, "getAll"]);
 
 $app->get("/api/departments/{id}", [DepartmentController::class, "getById"]);
+
+$app->get("/api/scheduling/constraints", [SchedulingConstraintController::class, "getAll"]);
+
+$app->put("/api/scheduling/constraints/{id}", [SchedulingConstraintController::class, "update"]);
+
+$app->delete("/api/scheduling/constraints/{id}", [SchedulingConstraintController::class, "delete"]);
