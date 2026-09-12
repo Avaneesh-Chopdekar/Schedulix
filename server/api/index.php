@@ -6,17 +6,12 @@ require __DIR__ . "/../vendor/autoload.php";
 
 use Slim\Factory\AppFactory;
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
+
+$dotenv->load();
+
 $app = AppFactory::create();
 
-$app->get("/", function ($request, $response) {
-    $response->getBody()->write(
-        json_encode([
-            "success" => true,
-            "message" => "Schedulix API is running!",
-        ]),
-    );
-
-    return $response->withHeader("Content-Type", "application/json");
-});
+require __DIR__ . "/routes.php";
 
 $app->run();
