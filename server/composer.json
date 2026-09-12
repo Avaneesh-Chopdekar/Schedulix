@@ -1,0 +1,22 @@
+{
+  "name": "schedulix/server",
+  "authors": [
+    {
+      "name": "Avaneesh Chopdekar",
+      "email": "avaneeshchopdekar42@gmail.com"
+    },
+    {
+      "name": "Harshal Yadav",
+      "email": "yadavharshal76@gmail.com"
+    },
+    {
+      "name": "Vanshaj Madeshiya",
+      "email": "vanshmadeshiya97@gmail.com"
+    }
+  ],
+  "require": {
+    "slim/slim": "^4.15",
+    "slim/psr7": "^1.8",
+    "vlucas/phpdotenv": "^5.7"
+  }
+}
