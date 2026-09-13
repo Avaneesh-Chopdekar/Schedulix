@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'schedulix/server',
-        'pretty_version' => 'dev-develop',
-        'version' => 'dev-develop',
-        'reference' => '568ca0cfd70dce258c7b1e4d728ded08ff58383c',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'b4f119cef005f21dea4dd71dd5c9497cb661ff2a',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -122,9 +122,9 @@
             'dev_requirement' => false,
         ),
         'schedulix/server' => array(
-            'pretty_version' => 'dev-develop',
-            'version' => 'dev-develop',
-            'reference' => '568ca0cfd70dce258c7b1e4d728ded08ff58383c',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'b4f119cef005f21dea4dd71dd5c9497cb661ff2a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
