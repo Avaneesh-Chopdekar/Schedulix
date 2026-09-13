@@ -28,30 +28,47 @@ class SchedulingConstraintRepository {
         
         return $constraints;
     }
- public function update(int $id, array $data): bool {
-    $sql = "UPDATE scheduling_constraints 
-            SET constraint_type = :type, constraint_name = :name, description = :description, 
-                is_hard_constraint = :is_hard, is_active = :is_active, priority = :priority
-            WHERE constraint_id = :id";
-    
-    $stmt = $this->db->prepare($sql);
-    $stmt->execute([
-        ':type' => $data['constraint_type'],
-        ':name' => $data['constraint_name'],
-        ':description' => $data['description'] ?? null,
-        ':is_hard' => (int) ($data['is_hard_constraint'] ?? 1), // Force to integer for MySQL
-        ':is_active' => (int) ($data['is_active'] ?? 1),
-        ':priority' => (int) ($data['priority'] ?? 1),
-        ':id' => $id
-    ]);
 
-    // Explicitly check if the database actually changed a row
-    if ($stmt->rowCount() === 0) {
-        throw new Exception("Update failed: No constraint found with ID $id, or the data you sent is identical to what is already saved.");
+    public function create(array $data): int {
+        $sql = "INSERT INTO scheduling_constraints (constraint_type, constraint_name, description, is_hard_constraint, is_active, priority)
+                VALUES (:type, :name, :description, :is_hard, :is_active, :priority)";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            ':type' => $data['constraint_type'],
+            ':name' => $data['constraint_name'],
+            ':description' => $data['description'] ?? null,
+            ':is_hard' => (int) ($data['is_hard_constraint'] ?? 1),
+            ':is_active' => (int) ($data['is_active'] ?? 1),
+            ':priority' => (int) ($data['priority'] ?? 1)
+        ]);
+
+        return (int) $this->db->lastInsertId();
     }
-    
-    return true;
-}
+
+    public function update(int $id, array $data): bool {
+        $sql = "UPDATE scheduling_constraints 
+                SET constraint_type = :type, constraint_name = :name, description = :description, 
+                    is_hard_constraint = :is_hard, is_active = :is_active, priority = :priority
+                WHERE constraint_id = :id";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            ':type' => $data['constraint_type'],
+            ':name' => $data['constraint_name'],
+            ':description' => $data['description'] ?? null,
+            ':is_hard' => (int) ($data['is_hard_constraint'] ?? 1), 
+            ':is_active' => (int) ($data['is_active'] ?? 1),
+            ':priority' => (int) ($data['priority'] ?? 1),
+            ':id' => $id
+        ]);
+
+        if ($stmt->rowCount() === 0) {
+            throw new Exception("Update failed: No constraint found with ID $id, or the data you sent is identical to what is already saved.");
+        }
+        
+        return true;
+    }
 
     public function delete(int $id): bool {
         $stmt = $this->db->prepare("DELETE FROM scheduling_constraints WHERE constraint_id = :id");

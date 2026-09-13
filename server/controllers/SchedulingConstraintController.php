@@ -6,23 +6,17 @@ require_once __DIR__ . "/../services/SchedulingConstraintService.php";
 class SchedulingConstraintController {
     private SchedulingConstraintService $service;
 
-    // In a real app, use a Dependency Injection container. 
-    // For manual wiring, we instantiate the dependencies here.
- public function __construct() {
-    require_once __DIR__ . "/../config/database.php";
-    $db = Database::getConnection(); 
-    $repo = new SchedulingConstraintRepository($db);
-    $this->service = new SchedulingConstraintService($repo);
-}
+    public function __construct() {
+        require_once __DIR__ . "/../config/database.php";
+        $db = Database::getConnection(); 
+        $repo = new SchedulingConstraintRepository($db);
+        $this->service = new SchedulingConstraintService($repo);
+    }
 
     public function getAll($request, $response) {
         try {
             $constraints = $this->service->getAllConstraints();
-            
-            // Convert Model objects to arrays for JSON serialization
-            $payload = array_map(function($constraint) {
-                return $constraint->toArray();
-            }, $constraints);
+            $payload = array_map(fn($c) => $c->toArray(), $constraints);
 
             $response->getBody()->write(json_encode([
                 "success" => true,
@@ -30,21 +24,42 @@ class SchedulingConstraintController {
             ]));
             return $response->withHeader("Content-Type", "application/json")->withStatus(200);
 
-        } catch (Exception $e) {
-            $response->getBody()->write(json_encode([
-                "success" => false,
-                "message" => "Failed to fetch constraints: " . $e->getMessage()
-            ]));
+        } catch (Throwable $e) {
+            $response->getBody()->write(json_encode(["success" => false, "message" => $e->getMessage()]));
             return $response->withHeader("Content-Type", "application/json")->withStatus(500);
         }
     }
 
-   public function update($request, $response, $args) {
+    public function create($request, $response) {
+        try {
+            $data = json_decode((string)$request->getBody(), true);
+            if ($data === null) {
+                throw new InvalidArgumentException("Invalid JSON payload provided.");
+            }
+
+            $newId = $this->service->createConstraint($data);
+
+            $response->getBody()->write(json_encode([
+                "success" => true,
+                "message" => "Scheduling constraint created successfully",
+                "constraint_id" => $newId
+            ]));
+            return $response->withHeader("Content-Type", "application/json")->withStatus(201);
+            
+        } catch (InvalidArgumentException $e) {
+            $response->getBody()->write(json_encode(["success" => false, "message" => $e->getMessage()]));
+            return $response->withHeader("Content-Type", "application/json")->withStatus(400);
+        } catch (Throwable $e) {
+            $response->getBody()->write(json_encode(["success" => false, "message" => $e->getMessage()]));
+            return $response->withHeader("Content-Type", "application/json")->withStatus(500);
+        }
+    }
+
+    public function update($request, $response, $args) {
         try {
             $id = (int) $args['id'];
             $data = json_decode((string)$request->getBody(), true);
             
-            // Protect against malformed JSON from the frontend/terminal
             if ($data === null) {
                 throw new InvalidArgumentException("Invalid JSON payload provided.");
             }
@@ -77,7 +92,7 @@ class SchedulingConstraintController {
             ]));
             return $response->withHeader("Content-Type", "application/json")->withStatus(200);
 
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $response->getBody()->write(json_encode(["success" => false, "message" => $e->getMessage()]));
             return $response->withHeader("Content-Type", "application/json")->withStatus(500);
         }

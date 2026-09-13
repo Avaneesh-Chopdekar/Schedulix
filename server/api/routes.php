@@ -25,6 +25,8 @@ $app->get("/api/departments/{id}", [DepartmentController::class, "getById"]);
 
 $app->get("/api/scheduling/constraints", [SchedulingConstraintController::class, "getAll"]);
 
+$app->post("/api/scheduling/constraints", [SchedulingConstraintController::class, "create"]);
+
 $app->put("/api/scheduling/constraints/{id}", [SchedulingConstraintController::class, "update"]);
 
 $app->delete("/api/scheduling/constraints/{id}", [SchedulingConstraintController::class, "delete"]);

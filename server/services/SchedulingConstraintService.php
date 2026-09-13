@@ -14,8 +14,7 @@ class SchedulingConstraintService {
         return $this->repo->getAll();
     }
 
-    // Fulfills your Validation responsibility
-    public function validateCreationData(array $data): void {
+    public function validateData(array $data): void {
         $validTypes = [
             'TEACHER_UNAVAILABLE', 'ROOM_CAPACITY', 'ROOM_TYPE', 
             'TEACHER_CONFLICT', 'SECTION_CONFLICT', 'MAX_LECTURES', 
@@ -31,9 +30,13 @@ class SchedulingConstraintService {
         }
     }
 
+    public function createConstraint(array $data): int {
+        $this->validateData($data);
+        return $this->repo->create($data);
+    }
+
     public function updateConstraint(int $id, array $data): bool {
-        // Re-use the exact same validation rules for updates
-        $this->validateCreationData($data);
+        $this->validateData($data);
         return $this->repo->update($id, $data);
     }
 
