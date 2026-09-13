@@ -3,6 +3,8 @@
 declare(strict_types=1);
 require_once __DIR__ . "/../controllers/ClassroomController.php";
 
+require_once __DIR__ . "/../controllers/TimeSlotController.php";
+
 require_once __DIR__ . "/../controllers/DepartmentController.php";
 
 $app->get("/api/health", function ($request, $response) {
@@ -47,4 +49,31 @@ $app->put(
 $app->delete(
     "/api/classrooms/{id}",
     [ClassroomController::class, "delete"]
+);
+
+// Time Slot routes
+
+$app->get(
+    "/api/time-slots",
+    [TimeSlotController::class, "getAll"]
+);
+
+$app->get(
+    "/api/time-slots/{id}",
+    [TimeSlotController::class, "getById"]
+);
+
+$app->post(
+    "/api/time-slots",
+    [TimeSlotController::class, "create"]
+);
+
+$app->put(
+    "/api/time-slots/{id}",
+    [TimeSlotController::class, "update"]
+);
+
+$app->delete(
+    "/api/time-slots/{id}",
+    [TimeSlotController::class, "delete"]
 );
