@@ -3,6 +3,8 @@
 declare(strict_types=1);
 require_once __DIR__ . "/../controllers/ClassroomController.php";
 
+require_once __DIR__ . "/../controllers/TeacherAvailabilityController.php";
+
 require_once __DIR__ . "/../controllers/TimeSlotController.php";
 
 require_once __DIR__ . "/../controllers/DepartmentController.php";
@@ -76,4 +78,31 @@ $app->put(
 $app->delete(
     "/api/time-slots/{id}",
     [TimeSlotController::class, "delete"]
+);
+
+// Teacher Availability routes
+
+$app->get(
+    "/api/teacher-availability",
+    [TeacherAvailabilityController::class, "getAll"]
+);
+
+$app->get(
+    "/api/teacher-availability/{id}",
+    [TeacherAvailabilityController::class, "getById"]
+);
+
+$app->post(
+    "/api/teacher-availability",
+    [TeacherAvailabilityController::class, "create"]
+);
+
+$app->put(
+    "/api/teacher-availability/{id}",
+    [TeacherAvailabilityController::class, "update"]
+);
+
+$app->delete(
+    "/api/teacher-availability/{id}",
+    [TeacherAvailabilityController::class, "delete"]
 );
