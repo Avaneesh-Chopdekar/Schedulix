@@ -6,6 +6,8 @@ require_once __DIR__ . "/../controllers/DepartmentController.php";
 
 require_once __DIR__ . "/../controllers/SchedulingConstraintController.php";
 
+require_once __DIR__ . "/../controllers/TimetableGenerationController.php";
+
 $app->get("/api/health", function ($request, $response) {
     $response->getBody()->write(
         json_encode([
@@ -30,3 +32,10 @@ $app->post("/api/scheduling/constraints", [SchedulingConstraintController::class
 $app->put("/api/scheduling/constraints/{id}", [SchedulingConstraintController::class, "update"]);
 
 $app->delete("/api/scheduling/constraints/{id}", [SchedulingConstraintController::class, "delete"]);
+
+
+$app->get("/api/timetable/generations", [TimetableGenerationController::class, "getAll"]);
+
+$app->post("/api/timetable/generations", [TimetableGenerationController::class, "create"]);
+
+$app->delete("/api/timetable/generations/{id}", [TimetableGenerationController::class, "delete"]);
