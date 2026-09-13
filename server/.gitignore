@@ -1,2 +1,6 @@
 .env
 vendor/
+composer.phar 
+payload.json
+*.log
+

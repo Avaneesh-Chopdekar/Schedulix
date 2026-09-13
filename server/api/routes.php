@@ -9,6 +9,13 @@ require_once __DIR__ . "/../controllers/TimeSlotController.php";
 
 require_once __DIR__ . "/../controllers/DepartmentController.php";
 
+require_once __DIR__ . "/../controllers/SchedulingConstraintController.php";
+
+require_once __DIR__ . "/../controllers/TimetableGenerationController.php";
+
+require_once __DIR__ . "/../controllers/TimetableController.php";
+
+
 $app->get("/api/health", function ($request, $response) {
     $response->getBody()->write(
         json_encode([
@@ -26,6 +33,30 @@ $app->get("/api/departments", [DepartmentController::class, "getAll"]);
 
 $app->get("/api/departments/{id}", [DepartmentController::class, "getById"]);
 
+//Scheduling constraints routes
+$app->get("/api/scheduling/constraints", [SchedulingConstraintController::class, "getAll"]);
+
+$app->post("/api/scheduling/constraints", [SchedulingConstraintController::class, "create"]);
+
+$app->put("/api/scheduling/constraints/{id}", [SchedulingConstraintController::class, "update"]);
+
+$app->delete("/api/scheduling/constraints/{id}", [SchedulingConstraintController::class, "delete"]);
+
+// timetable generation routes
+$app->get("/api/timetable/generations", [TimetableGenerationController::class, "getAll"]);
+
+$app->post("/api/timetable/generations", [TimetableGenerationController::class, "create"]);
+
+$app->delete("/api/timetable/generations/{id}", [TimetableGenerationController::class, "delete"]);
+
+// timetable routes
+$app->get("/api/timetable", [TimetableController::class, "getAll"]);
+
+$app->post("/api/timetable", [TimetableController::class, "create"]);
+
+$app->put("/api/timetable/{id}", [TimetableController::class, "update"]);
+
+$app->delete("/api/timetable/{id}", [TimetableController::class, "delete"]);
 // Classroom routes
 
 $app->get(

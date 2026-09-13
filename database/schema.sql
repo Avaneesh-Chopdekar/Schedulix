@@ -1,5 +1,4 @@
 SET FOREIGN_KEY_CHECKS = 0;
- 
 -- Drop all tables to allow clean re-runs
 DROP TABLE IF EXISTS timetable;
 DROP TABLE IF EXISTS timetable_generations;
@@ -16,13 +15,10 @@ DROP TABLE IF EXISTS departments;
 DROP TABLE IF EXISTS password_reset_tokens;
 DROP TABLE IF EXISTS user_sessions;
 DROP TABLE IF EXISTS users;
- 
+
 SET FOREIGN_KEY_CHECKS = 1;
- 
--- ==========================================
--- 1. SCHEMAS
--- ==========================================
- 
+
+
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
@@ -35,7 +31,6 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
- 
 CREATE TABLE user_sessions (
     session_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -45,7 +40,6 @@ CREATE TABLE user_sessions (
     revoked_at TIMESTAMP NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
- 
 CREATE TABLE password_reset_tokens (
     reset_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -55,13 +49,11 @@ CREATE TABLE password_reset_tokens (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
- 
 CREATE TABLE departments (
     department_id INT AUTO_INCREMENT PRIMARY KEY,
     department_name VARCHAR(100) UNIQUE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
- 
 CREATE TABLE teachers (
     teacher_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT UNIQUE NOT NULL,
@@ -74,7 +66,6 @@ CREATE TABLE teachers (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (department_id) REFERENCES departments(department_id)
 );
- 
 CREATE TABLE sections (
     section_id INT AUTO_INCREMENT PRIMARY KEY,
     section_name VARCHAR(10) NOT NULL,
@@ -85,7 +76,6 @@ CREATE TABLE sections (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (department_id) REFERENCES departments(department_id)
 );
- 
 CREATE TABLE students (
     student_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT UNIQUE NOT NULL,
@@ -97,7 +87,6 @@ CREATE TABLE students (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (section_id) REFERENCES sections(section_id)
 );
- 
 CREATE TABLE subjects (
     subject_id INT AUTO_INCREMENT PRIMARY KEY,
     subject_code VARCHAR(20) UNIQUE NOT NULL,
@@ -109,7 +98,6 @@ CREATE TABLE subjects (
     required_room_type ENUM('CLASSROOM', 'LAB', 'SEMINAR') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
- 
 CREATE TABLE subject_sections (
     subject_id INT NOT NULL,
     section_id INT NOT NULL,
@@ -118,7 +106,6 @@ CREATE TABLE subject_sections (
     FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE,
     FOREIGN KEY (section_id) REFERENCES sections(section_id) ON DELETE CASCADE
 );
- 
 CREATE TABLE classrooms (
     classroom_id INT AUTO_INCREMENT PRIMARY KEY,
     room_number VARCHAR(10) UNIQUE NOT NULL,
@@ -130,7 +117,6 @@ CREATE TABLE classrooms (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
- 
 CREATE TABLE time_slots (
     time_slot_id INT AUTO_INCREMENT PRIMARY KEY,
     day VARCHAR(10) NOT NULL,
@@ -140,7 +126,6 @@ CREATE TABLE time_slots (
     is_break BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
- 
 CREATE TABLE teacher_availability (
     availability_id INT AUTO_INCREMENT PRIMARY KEY,
     teacher_id INT NOT NULL,
@@ -152,7 +137,6 @@ CREATE TABLE teacher_availability (
     FOREIGN KEY (time_slot_id) REFERENCES time_slots(time_slot_id) ON DELETE CASCADE,
     UNIQUE KEY unique_teacher_day_slot (teacher_id, time_slot_id, day)
 );
- 
 CREATE TABLE scheduling_constraints (
     constraint_id INT AUTO_INCREMENT PRIMARY KEY,
     constraint_type ENUM('TEACHER_UNAVAILABLE', 'ROOM_CAPACITY', 'ROOM_TYPE', 'TEACHER_CONFLICT', 'SECTION_CONFLICT', 'MAX_LECTURES', 'CONSECUTIVE_LECTURES', 'OTHER') NOT NULL,
@@ -163,7 +147,6 @@ CREATE TABLE scheduling_constraints (
     priority INT DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
- 
 CREATE TABLE timetable_generations (
     generation_id INT AUTO_INCREMENT PRIMARY KEY,
     section_id INT NOT NULL,
@@ -178,7 +161,6 @@ CREATE TABLE timetable_generations (
     FOREIGN KEY (section_id) REFERENCES sections(section_id),
     FOREIGN KEY (generated_by) REFERENCES users(user_id)
 );
- 
 CREATE TABLE timetable (
     timetable_id INT AUTO_INCREMENT PRIMARY KEY,
     generation_id INT NOT NULL,
@@ -198,4 +180,3 @@ CREATE TABLE timetable (
     UNIQUE KEY unique_room_slot (generation_id, classroom_id, time_slot_id),
     UNIQUE KEY unique_section_slot (generation_id, section_id, time_slot_id)
 );
- 
