@@ -3,8 +3,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 
 // Public pages
 import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import AuthPage from "./pages/auth/AuthPage";
 
 // Admin pages
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -23,6 +22,7 @@ import FacultyDashboard from "./pages/faculty/FacultyDashboard";
 
 // Student
 import StudentDashboard from "./pages/student/StudentDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -31,53 +31,61 @@ function App() {
 
       <Route path="/" element={<Home />} />
 
-      <Route path="/login" element={<Login />} />
+      {/* ========================= AUTH ========================= */}
 
-      <Route path="/register" element={<Register />} />
+      <Route path="/auth/login" element={<AuthPage />} />
+
+      <Route path="/auth/register" element={<AuthPage />} />
 
       {/* ================= ADMIN ================= */}
 
-      <Route path="/admin" element={<DashboardLayout />}>
-        <Route path="dashboard" element={<AdminDashboard />} />
+      <Route element={<ProtectedRoute requiredRole="ADMIN" />}>
+        <Route path="/admin" element={<DashboardLayout />}>
+          <Route path="dashboard" element={<AdminDashboard />} />
 
-        <Route path="teachers" element={<Teachers />} />
+          <Route path="teachers" element={<Teachers />} />
 
-        <Route path="teachers/add" element={<AddTeacher />} />
+          <Route path="teachers/add" element={<AddTeacher />} />
 
-        <Route path="teachers/edit/:id" element={<AddTeacher />} />
+          <Route path="teachers/edit/:id" element={<AddTeacher />} />
 
-        <Route path="subjects" element={<Subjects />} />
+          <Route path="subjects" element={<Subjects />} />
 
-        <Route path="subjects/add" element={<AddSubject />} />
+          <Route path="subjects/add" element={<AddSubject />} />
 
-        <Route path="subjects/edit/:id" element={<AddSubject />} />
+          <Route path="subjects/edit/:id" element={<AddSubject />} />
 
-        <Route path="classrooms" element={<Classrooms />} />
+          <Route path="classrooms" element={<Classrooms />} />
 
-        <Route path="classrooms/add" element={<AddClassroom />} />
+          <Route path="classrooms/add" element={<AddClassroom />} />
 
-        <Route path="classrooms/edit/:id" element={<AddClassroom />} />
+          <Route path="classrooms/edit/:id" element={<AddClassroom />} />
 
-        <Route path="timeslots" element={<TimeSlots />} />
+          <Route path="timeslots" element={<TimeSlots />} />
 
-        <Route path="timeslots/add" element={<AddTimeSlot />} />
+          <Route path="timeslots/add" element={<AddTimeSlot />} />
 
-        <Route path="timeslots/edit/:id" element={<AddTimeSlot />} />
+          <Route path="timeslots/edit/:id" element={<AddTimeSlot />} />
 
-        <Route path="timetable" element={<Timetable />} />
+          <Route path="timetable" element={<Timetable />} />
 
-        <Route path="timetable/edit/:id" element={<Timetable />} />
+          <Route path="timetable/edit/:id" element={<Timetable />} />
 
-        {/*<Route path="timetable/edit/:id" element={<EditTimetableEntry />} />*/}
+          {/*<Route path="timetable/edit/:id" element={<EditTimetableEntry />} />*/}
+        </Route>
       </Route>
 
       {/* ================= FACULTY ================= */}
 
-      <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
+      <Route element={<ProtectedRoute requiredRole="FACULTY" />}>
+        <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
+      </Route>
 
       {/* ================= STUDENT ================= */}
 
-      <Route path="/student/dashboard" element={<StudentDashboard />} />
+      <Route element={<ProtectedRoute requiredRole="STUDENT" />}>
+        <Route path="/student/dashboard" element={<StudentDashboard />} />
+      </Route>
 
       {/* ================= 404 ================= */}
 

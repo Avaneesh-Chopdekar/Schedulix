@@ -18,7 +18,8 @@ import {
   Typography,
 } from "@mui/material";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const drawerWidth = 250;
 
@@ -56,6 +57,17 @@ const menuItems = [
 ];
 
 function Sidebar() {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  async function handleLogout() {
+    try {
+      await logout();
+    } finally {
+      navigate("/auth/login", { replace: true });
+    }
+  }
+
   return (
     <Drawer
       variant="permanent"
@@ -97,6 +109,7 @@ function Sidebar() {
         ))}
 
         <ListItemButton
+          onClick={handleLogout}
           sx={{
             borderRadius: 2,
             mt: 2,
