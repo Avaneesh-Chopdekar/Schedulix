@@ -25,6 +25,16 @@ require_once __DIR__ . "/../controllers/SubjectController.php";
 
 require_once __DIR__ . "/../controllers/SubjectSectionController.php";
 
+require_once __DIR__ . "/../controllers/AuthController.php";
+
+require_once __DIR__ . "/../controllers/AdminDashboardController.php";
+
+require_once __DIR__ . "/../controllers/AdminController.php";
+
+require_once __DIR__ . "/../middleware/AuthMiddleware.php";
+
+require_once __DIR__ . "/../middleware/RoleMiddleware.php";
+
 $app->get("/api/health", function ($request, $response) {
     $response->getBody()->write(
         json_encode([
@@ -254,3 +264,40 @@ $app->delete("/api/subject-sections/{id}", [
     SubjectSectionController::class,
     "delete",
 ]);
+
+/*
+|--------------------------------------------------------------------------
+| AUTH
+|--------------------------------------------------------------------------
+*/
+
+$app->post("/api/auth/register", [AuthController::class, "register"]);
+
+$app->post("/api/auth/login", [AuthController::class, "login"]);
+
+$app->get("/api/auth/me", [AuthController::class, "me"])->add(
+    new AuthMiddleware(),
+);
+
+$app->post("/api/auth/logout", [AuthController::class, "logout"])->add(
+    new AuthMiddleware(),
+);
+
+$app->get("/api/auth/sessions", [AuthController::class, "getSessions"])->add(
+    new AuthMiddleware(),
+);
+
+$app->delete("/api/auth/sessions/{id}", [
+    AuthController::class,
+    "revokeSession",
+])->add(new AuthMiddleware());
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN
+|--------------------------------------------------------------------------
+*/
+
+$app->get("/api/admin/dashboard", [AdminController::class, "dashboard"])
+    ->add(new RoleMiddleware("ADMIN"))
+    ->add(new AuthMiddleware());
