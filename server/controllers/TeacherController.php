@@ -304,6 +304,10 @@ class TeacherController
 
             "employment_type" => $teacher->getEmploymentType(),
 
+            "first_name" => $teacher->getFirstName(),
+
+            "last_name" => $teacher->getLastName(),
+
             "created_at" => $teacher->getCreatedAt(),
 
             "updated_at" => $teacher->getUpdatedAt(),

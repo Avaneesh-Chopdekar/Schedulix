@@ -57,10 +57,20 @@ class UserSessionRepository
                 u.email,
                 u.mobile_number,
                 u.role,
-                u.is_active
+                u.is_active,
+                st.student_id,
+                st.roll_number,
+                st.section_id,
+                sec.section_name,
+                sec.semester,
+                sec.academic_year
             FROM user_sessions us
             INNER JOIN users u
                 ON u.user_id = us.user_id
+            LEFT JOIN students st
+                ON st.user_id = u.user_id
+            LEFT JOIN sections sec
+                ON sec.section_id = st.section_id
             WHERE us.token_hash = :token_hash
                 AND us.revoked_at IS NULL
                 AND us.expires_at > CURRENT_TIMESTAMP

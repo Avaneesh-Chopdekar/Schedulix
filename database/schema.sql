@@ -1,5 +1,7 @@
 SET FOREIGN_KEY_CHECKS = 0;
 -- Drop all tables to allow clean re-runs
+DROP TABLE IF EXISTS timetable_changes;
+DROP TABLE IF EXISTS teacher_absences;
 DROP TABLE IF EXISTS timetable;
 DROP TABLE IF EXISTS timetable_generations;
 DROP TABLE IF EXISTS scheduling_constraints;
@@ -99,10 +101,11 @@ CREATE TABLE subjects (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE subject_sections (
+    subject_section_id INT AUTO_INCREMENT PRIMARY KEY,
     subject_id INT NOT NULL,
     section_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (subject_id, section_id),
+    UNIQUE KEY unique_subject_section (subject_id, section_id),
     FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE,
     FOREIGN KEY (section_id) REFERENCES sections(section_id) ON DELETE CASCADE
 );
@@ -179,4 +182,25 @@ CREATE TABLE timetable (
     UNIQUE KEY unique_teacher_slot (generation_id, teacher_id, time_slot_id),
     UNIQUE KEY unique_room_slot (generation_id, classroom_id, time_slot_id),
     UNIQUE KEY unique_section_slot (generation_id, section_id, time_slot_id)
+);
+CREATE TABLE timetable_changes (
+    change_id INT AUTO_INCREMENT PRIMARY KEY,
+    timetable_id INT NOT NULL,
+    generation_id INT NOT NULL,
+    changed_by INT NOT NULL,
+    old_values JSON NOT NULL,
+    new_values JSON NOT NULL,
+    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (timetable_id) REFERENCES timetable(timetable_id) ON DELETE CASCADE,
+    FOREIGN KEY (generation_id) REFERENCES timetable_generations(generation_id) ON DELETE CASCADE,
+    FOREIGN KEY (changed_by) REFERENCES users(user_id)
+);
+CREATE TABLE teacher_absences (
+    absence_id INT AUTO_INCREMENT PRIMARY KEY,
+    teacher_id INT NOT NULL,
+    absence_date DATE NOT NULL,
+    reason VARCHAR(255) NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id) ON DELETE CASCADE,
+    UNIQUE KEY unique_teacher_absence_date (teacher_id, absence_date)
 );

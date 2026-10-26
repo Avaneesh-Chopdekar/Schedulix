@@ -5,6 +5,10 @@ import {
   MeetingRoom,
   AccessTime,
   CalendarMonth,
+  Class,
+  School,
+  EventAvailable,
+  Link as LinkIcon,
   Logout,
 } from "@mui/icons-material";
 
@@ -50,13 +54,48 @@ const menuItems = [
     icon: <AccessTime />,
   },
   {
+    label: "Sections",
+    path: "/admin/sections",
+    icon: <Class />,
+  },
+  {
+    label: "Students",
+    path: "/admin/students",
+    icon: <School />,
+  },
+  {
+    label: "Teacher Availability",
+    path: "/admin/teacher-availability",
+    icon: <EventAvailable />,
+  },
+  {
+    label: "Subject Assignments",
+    path: "/admin/subject-sections",
+    icon: <LinkIcon />,
+  },
+  {
     label: "Timetable",
     path: "/admin/timetable",
     icon: <CalendarMonth />,
   },
+  {
+    label: "Finalized Timetables",
+    path: "/admin/timetable/finalized",
+    icon: <CalendarMonth />,
+  },
+  {
+    label: "Teaching Assignments",
+    path: "/admin/teaching-assignments",
+    icon: <People />,
+  },
 ];
 
-function Sidebar() {
+interface SidebarProps {
+  mobileOpen: boolean;
+  onMobileClose: () => void;
+}
+
+function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
@@ -68,19 +107,8 @@ function Sidebar() {
     }
   }
 
-  return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-
-        "& .MuiDrawer-paper": {
-          width: drawerWidth,
-          boxSizing: "border-box",
-        },
-      }}
-    >
+  const content = (
+    <>
       <Toolbar>
         <Typography variant="h6" style={{ fontWeight: "bold" }}>
           Schedulix
@@ -93,6 +121,8 @@ function Sidebar() {
             key={item.path}
             component={NavLink}
             to={item.path}
+            end
+            onClick={onMobileClose}
             sx={{
               borderRadius: 2,
               mb: 0.5,
@@ -122,7 +152,35 @@ function Sidebar() {
           <ListItemText primary="Logout" />
         </ListItemButton>
       </List>
-    </Drawer>
+    </>
+  );
+
+  return (
+    <>
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: "none", md: "block" },
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box" },
+        }}
+      >
+        {content}
+      </Drawer>
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={onMobileClose}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box" },
+        }}
+      >
+        {content}
+      </Drawer>
+    </>
   );
 }
 

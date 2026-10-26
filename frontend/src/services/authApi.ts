@@ -9,6 +9,12 @@ export interface User {
   role: "ADMIN" | "FACULTY" | "STUDENT";
   is_active: boolean;
   created_at: string;
+  student_id?: number;
+  roll_number?: string;
+  section_id?: number;
+  section_name?: string;
+  semester?: number;
+  academic_year?: string;
 }
 
 export interface LoginResponse {

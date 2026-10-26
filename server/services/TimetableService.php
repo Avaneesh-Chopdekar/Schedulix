@@ -10,8 +10,12 @@ class TimetableService {
         $this->repo = $repo;
     }
 
-    public function getAllSlots(): array {
-        return $this->repo->getAll();
+    public function getAllSlots(?int $generationId = null): array {
+        return $this->repo->getAll($generationId);
+    }
+
+    public function getSlotsByGeneration(int $generationId): array {
+        return $this->repo->getByGeneration($generationId);
     }
 
     public function validateData(array $data): void {
@@ -31,6 +35,10 @@ class TimetableService {
     public function updateSlot(int $id, array $data): bool {
         $this->validateData($data);
         return $this->repo->update($id, $data);
+    }
+
+    public function getChanges(?int $generationId = null): array {
+        return $this->repo->getChanges($generationId);
     }
 
     public function deleteSlot(int $id): bool {

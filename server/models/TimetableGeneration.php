@@ -9,6 +9,7 @@ class TimetableGeneration {
     private string $status;
     private ?string $generatedAt;
     private int $generatedBy;
+    private ?string $algorithm;
 
     public function __construct(
         int $generationId,
@@ -17,7 +18,8 @@ class TimetableGeneration {
         string $academicYear,
         string $status,
         ?string $generatedAt,
-        int $generatedBy
+        int $generatedBy,
+        ?string $algorithm = null
     ) {
         $this->generationId = $generationId;
         $this->sectionId = $sectionId;
@@ -26,6 +28,7 @@ class TimetableGeneration {
         $this->status = $status;
         $this->generatedAt = $generatedAt;
         $this->generatedBy = $generatedBy;
+        $this->algorithm = $algorithm;
     }
 
     public function toArray(): array {
@@ -36,7 +39,8 @@ class TimetableGeneration {
             'academic_year' => $this->academicYear,
             'status' => $this->status,
             'generated_at' => $this->generatedAt,
-            'generated_by' => $this->generatedBy
+            'generated_by' => $this->generatedBy,
+            'algorithm' => $this->algorithm,
         ];
     }
 }

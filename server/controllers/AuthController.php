@@ -126,6 +126,12 @@ class AuthController
                     "mobile_number" => $authUser["mobile_number"],
                     "role" => $authUser["role"],
                     "is_active" => (bool) $authUser["is_active"],
+                    "student_id" => isset($authUser["student_id"]) ? (int) $authUser["student_id"] : null,
+                    "roll_number" => $authUser["roll_number"] ?? null,
+                    "section_id" => isset($authUser["section_id"]) ? (int) $authUser["section_id"] : null,
+                    "section_name" => $authUser["section_name"] ?? null,
+                    "semester" => isset($authUser["semester"]) ? (int) $authUser["semester"] : null,
+                    "academic_year" => $authUser["academic_year"] ?? null,
                 ],
             ]),
         );
