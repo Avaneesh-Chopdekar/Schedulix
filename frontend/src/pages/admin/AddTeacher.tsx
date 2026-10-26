@@ -10,6 +10,20 @@ import {
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
+import { register as registerTeacher } from "../../services/authApi";
+
+type TeacherFormValues = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  mobile: string;
+  employeeId: string;
+  department: string;
+  designation: string;
+  employmentType: string;
+  password: string;
+  confirmPassword: string;
+};
 
 function AddTeacher() {
   const navigate = useNavigate();
@@ -19,19 +33,28 @@ function AddTeacher() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm<TeacherFormValues>();
 
   const password = watch("password");
 
-  const onSubmit = (data) => {
-    console.log(data);
-
-    // No backend yet.
-    // Later this will send data to PHP.
-
-    alert("Teacher form submitted successfully!");
-
-    navigate("/admin/teachers");
+  const onSubmit = async (data: TeacherFormValues) => {
+    try {
+      await registerTeacher({
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        mobile_number: data.mobile,
+        password: data.password,
+        role: "FACULTY",
+        department_id: Number(data.department),
+        employee_id: data.employeeId,
+        designation: data.designation ?? "Faculty",
+        employment_type: data.employmentType ?? "FULL_TIME",
+      });
+      navigate("/admin/teachers");
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Unable to create teacher.");
+    }
   };
 
   return (
@@ -75,7 +98,7 @@ function AddTeacher() {
               },
             })}
             error={!!errors.firstName}
-            helperText={errors.firstName?.message.toString()}
+            helperText={errors.firstName?.message ?? ""}
           />
 
           {/* Last Name */}
@@ -91,7 +114,7 @@ function AddTeacher() {
               },
             })}
             error={!!errors.lastName}
-            helperText={errors.lastName?.message.toString()}
+            helperText={errors.lastName?.message ?? ""}
           />
 
           {/* Email */}
@@ -108,7 +131,7 @@ function AddTeacher() {
               },
             })}
             error={!!errors.email}
-            helperText={errors.email?.message.toString()}
+            helperText={errors.email?.message ?? ""}
           />
 
           {/* Mobile */}
@@ -124,7 +147,7 @@ function AddTeacher() {
               },
             })}
             error={!!errors.mobile}
-            helperText={errors.mobile?.message.toString()}
+            helperText={errors.mobile?.message ?? ""}
           />
 
           {/* Employee ID */}
@@ -141,7 +164,7 @@ function AddTeacher() {
               },
             })}
             error={!!errors.employeeId}
-            helperText={errors.employeeId?.message.toString()}
+            helperText={errors.employeeId?.message ?? ""}
           />
 
           {/* Department */}
@@ -154,20 +177,38 @@ function AddTeacher() {
               required: "Please select a department",
             })}
             error={!!errors.department}
-            helperText={errors.department?.message.toString()}
+            helperText={errors.department?.message ?? ""}
           >
             <MenuItem value="">Select Department</MenuItem>
 
-            <MenuItem value="Computer Science">Computer Science</MenuItem>
+            <MenuItem value="1">Computer Science</MenuItem>
 
-            <MenuItem value="Information Technology">
+            <MenuItem value="2">
               Information Technology
             </MenuItem>
 
-            <MenuItem value="Artificial Intelligence">
+            <MenuItem value="3">
               Artificial Intelligence
             </MenuItem>
           </TextField>
+
+          <TextField
+            label="Designation"
+            defaultValue="Faculty"
+            {...register("designation", { required: "Designation is required" })}
+            error={!!errors.designation}
+            helperText={errors.designation?.message ?? ""}
+          />
+
+          <TextField
+            label="Employment Type"
+            defaultValue="FULL_TIME"
+            {...register("employmentType", {
+              required: "Employment type is required",
+            })}
+            error={!!errors.employmentType}
+            helperText={errors.employmentType?.message ?? ""}
+          />
 
           {/* Password */}
 
@@ -183,7 +224,7 @@ function AddTeacher() {
               },
             })}
             error={!!errors.password}
-            helperText={errors.password?.message.toString()}
+            helperText={errors.password?.message ?? ""}
           />
 
           {/* Confirm Password */}
@@ -198,7 +239,7 @@ function AddTeacher() {
                 value === password || "Passwords do not match",
             })}
             error={!!errors.confirmPassword}
-            helperText={errors.confirmPassword?.message.toString()}
+            helperText={errors.confirmPassword?.message ?? ""}
           />
         </Box>
 

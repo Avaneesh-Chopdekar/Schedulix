@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import {
@@ -32,12 +32,13 @@ import {
 } from "@mui/icons-material";
 
 import {
-  login,
   register,
   type RegisterData,
 } from "../../services/authApi";
+import { useAuth } from "../../context/AuthContext";
 
 import "./AuthPage.css";
+import ThemeToggle from "../../components/ThemeToggle";
 
 type AuthMode = "login" | "register";
 
@@ -84,6 +85,7 @@ const departments: Department[] = [
 export default function AuthPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, loading: authLoading, login: authenticate } = useAuth();
 
   const initialMode: AuthMode =
     location.pathname === "/auth/register" ? "register" : "login";
@@ -132,6 +134,23 @@ export default function AuthPage() {
   const [termsAccepted, setTermsAccepted] = useState(false);
 
   const [errors, setErrors] = useState<FormErrors>({});
+
+  function dashboardPath(role: "ADMIN" | "FACULTY" | "STUDENT"): string {
+    switch (role) {
+      case "ADMIN":
+        return "/admin/dashboard";
+      case "FACULTY":
+        return "/faculty/dashboard";
+      case "STUDENT":
+        return "/student/dashboard";
+    }
+  }
+
+  useEffect(() => {
+    if (!authLoading && user && location.pathname === "/auth/login") {
+      navigate(dashboardPath(user.role), { replace: true });
+    }
+  }, [authLoading, location.pathname, navigate, user]);
 
   function switchMode(newMode: AuthMode) {
     setMode(newMode);
@@ -262,28 +281,19 @@ export default function AuthPage() {
        *
        * The backend determines the user's role.
        */
-      const response = await login(email.trim(), password, rememberMe);
-
+      const response = await authenticate(email.trim(), password, rememberMe);
       if (!response.user) {
         throw new Error("Invalid login response.");
       }
 
-      switch (response.user.role) {
-        case "ADMIN":
-          navigate("/admin/dashboard");
-          break;
+      const requestedPath =
+        (location.state as { from?: string } | null)?.from ?? null;
+      const destination =
+        requestedPath && requestedPath.startsWith("/")
+          ? requestedPath
+          : dashboardPath(response.user.role);
 
-        case "FACULTY":
-          navigate("/faculty/dashboard");
-          break;
-
-        case "STUDENT":
-          navigate("/student/dashboard");
-          break;
-
-        default:
-          throw new Error("Unknown account role.");
-      }
+      navigate(destination, { replace: true });
     } catch (error) {
       setServerError(error instanceof Error ? error.message : "Login failed.");
     } finally {
@@ -357,7 +367,10 @@ export default function AuthPage() {
   }
 
   return (
-    <Box className="auth-page">
+    <Box className="auth-page" sx={{ position: "relative" }}>
+      <Box sx={{ position: "absolute", top: 16, right: 16 }}>
+        <ThemeToggle />
+      </Box>
       <Paper
         elevation={3}
         className={

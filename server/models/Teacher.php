@@ -10,6 +10,8 @@ class Teacher
     private string $employeeId;
     private string $designation;
     private string $employmentType;
+    private string $firstName;
+    private string $lastName;
     private string $createdAt;
     private string $updatedAt;
 
@@ -22,6 +24,8 @@ class Teacher
         string $employmentType,
         string $createdAt,
         string $updatedAt,
+        string $firstName = "",
+        string $lastName = "",
     ) {
         $this->teacherId = $teacherId;
         $this->userId = $userId;
@@ -29,6 +33,8 @@ class Teacher
         $this->employeeId = $employeeId;
         $this->designation = $designation;
         $this->employmentType = $employmentType;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
     }
@@ -61,6 +67,16 @@ class Teacher
     public function getEmploymentType(): string
     {
         return $this->employmentType;
+    }
+
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
+
+    public function getLastName(): string
+    {
+        return $this->lastName;
     }
 
     public function getCreatedAt(): string

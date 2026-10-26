@@ -18,15 +18,18 @@ class TeacherRepository
     {
         $sql = "
             SELECT
-                teacher_id,
-                user_id,
-                department_id,
-                employee_id,
-                designation,
-                employment_type,
-                created_at,
-                updated_at
+                teachers.teacher_id,
+                teachers.user_id,
+                teachers.department_id,
+                teachers.employee_id,
+                teachers.designation,
+                teachers.employment_type,
+                u.first_name,
+                u.last_name,
+                teachers.created_at,
+                teachers.updated_at
             FROM teachers
+            INNER JOIN users u ON u.user_id = teachers.user_id
             ORDER BY employee_id ASC
         ";
 
@@ -316,6 +319,8 @@ class TeacherRepository
             $row["employment_type"],
             $row["created_at"],
             $row["updated_at"],
+            $row["first_name"] ?? "",
+            $row["last_name"] ?? "",
         );
     }
 }

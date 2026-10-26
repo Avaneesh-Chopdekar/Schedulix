@@ -8,13 +8,20 @@ import {
 
 import {
     getCurrentUser,
+    login as apiLogin,
     logout as apiLogout,
+    type LoginResponse,
     type User
 } from "../services/authApi";
 
 interface AuthContextType {
     user: User | null;
     loading: boolean;
+    login: (
+        email: string,
+        password: string,
+        rememberMe: boolean
+    ) => Promise<LoginResponse>;
     logout: () => Promise<void>;
 }
 
@@ -56,11 +63,30 @@ export function AuthProvider({
         }
     }
 
+    async function login(
+        email: string,
+        password: string,
+        rememberMe: boolean
+    ): Promise<LoginResponse> {
+        const response = await apiLogin(email, password, rememberMe);
+
+        if (!response.user) {
+            throw new Error("Invalid login response.");
+        }
+
+        const currentUser = await getCurrentUser();
+        setUser(currentUser);
+        response.user = currentUser;
+
+        return response;
+    }
+
     return (
         <AuthContext.Provider
             value={{
                 user,
                 loading,
+                login,
                 logout
             }}
         >

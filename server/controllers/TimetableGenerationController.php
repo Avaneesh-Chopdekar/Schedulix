@@ -27,6 +27,32 @@ class TimetableGenerationController {
             $response->getBody()->write(json_encode(["success" => false, "message" => $e->getMessage()]));
             return $response->withHeader("Content-Type", "application/json")->withStatus(500);
         }
+
+    }
+
+    public function getById($request, $response, $args) {
+        try {
+            $id = filter_var($args['id'] ?? null, FILTER_VALIDATE_INT);
+            if ($id === false || $id < 1) {
+                throw new InvalidArgumentException("Generation id must be a positive integer.");
+            }
+            $generation = $this->service->getGeneration($id);
+            if ($generation === null) {
+                $response->getBody()->write(json_encode(["success" => false, "message" => "Generation not found."]));
+                return $response->withHeader("Content-Type", "application/json")->withStatus(404);
+            }
+            $response->getBody()->write(json_encode([
+                "success" => true,
+                "data" => $generation->toArray(),
+            ]));
+            return $response->withHeader("Content-Type", "application/json")->withStatus(200);
+        } catch (InvalidArgumentException $e) {
+            $response->getBody()->write(json_encode(["success" => false, "message" => $e->getMessage()]));
+            return $response->withHeader("Content-Type", "application/json")->withStatus(400);
+        } catch (Throwable $e) {
+            $response->getBody()->write(json_encode(["success" => false, "message" => $e->getMessage()]));
+            return $response->withHeader("Content-Type", "application/json")->withStatus(500);
+        }
     }
 
     public function create($request, $response) {

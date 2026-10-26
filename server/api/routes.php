@@ -16,6 +16,7 @@ require_once __DIR__ . "/../controllers/TimetableGenerationController.php";
 require_once __DIR__ . "/../controllers/TimetableController.php";
 
 require_once __DIR__ . "/../controllers/TeacherController.php";
+require_once __DIR__ . "/../controllers/TeacherAbsenceController.php";
 
 require_once __DIR__ . "/../controllers/StudentController.php";
 
@@ -79,6 +80,11 @@ $app->get("/api/timetable/generations", [
     "getAll",
 ]);
 
+$app->get("/api/timetable/generations/{id}", [
+    TimetableGenerationController::class,
+    "getById",
+]);
+
 $app->post("/api/timetable/generations", [
     TimetableGenerationController::class,
     "create",
@@ -90,7 +96,12 @@ $app->delete("/api/timetable/generations/{id}", [
 ]);
 
 // timetable routes
+$app->post("/api/timetable/generate", [TimetableController::class, "generate"])
+    ->add(new RoleMiddleware("ADMIN"))
+    ->add(new AuthMiddleware());
+
 $app->get("/api/timetable", [TimetableController::class, "getAll"]);
+$app->get("/api/timetable/changes", [TimetableController::class, "changes"]);
 
 $app->post("/api/timetable", [TimetableController::class, "create"]);
 
@@ -164,6 +175,12 @@ $app->post("/api/teachers", [TeacherController::class, "create"]);
 $app->put("/api/teachers/{id}", [TeacherController::class, "update"]);
 
 $app->delete("/api/teachers/{id}", [TeacherController::class, "delete"]);
+
+$app->get("/api/teacher-absences", [TeacherAbsenceController::class, "list"])
+    ->add(new AuthMiddleware());
+$app->post("/api/teacher-absences", [TeacherAbsenceController::class, "create"])
+    ->add(new RoleMiddleware("FACULTY"))
+    ->add(new AuthMiddleware());
 
 // Student routes
 

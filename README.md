@@ -1,274 +1,272 @@
 # Schedulix
 
-**Schedulix** is a constraint-based smart college timetable management system designed to simplify the process of creating and managing academic timetables. The application helps educational institutions reduce manual scheduling efforts while preventing common conflicts such as faculty overlaps, classroom clashes, and invalid resource allocations.
+**Schedulix** is an intelligent, constraint-based academic timetable management and scheduling system. Built to solve high-complexity scheduling challenges in colleges and universities, Schedulix automates the allocation of lectures, faculty members, and classrooms while eliminating scheduling conflicts (faculty overlaps, classroom clashes, room type mismatches, and capacity violations).
 
-This project is being developed as part of an MCA academic project using **React**, **Core PHP**, and **MySQL**.
-
----
-
-## Features
-
-### Authentication
-- User login
-- Role-based access (Admin, Faculty, Student)
-- Session management
-
-### Academic Management
-- Manage Departments
-- Manage Programs
-- Manage Semesters
-- Manage Teachers
-- Manage Subjects
-- Assign Subjects to Teachers
-
-### Resource Management
-- Manage Classrooms
-- Manage Laboratories
-- Define Room Capacity
-- Manage Resource Availability
-
-### Timetable Management
-- Create semester timetables
-- Assign lectures to faculty
-- Allocate classrooms
-- Manage lecture time slots
-- View faculty timetable
-- View student timetable
-
-### Constraint Validation
-The system validates scheduling constraints before saving a timetable.
-
-Examples include:
-
-- A faculty member cannot teach two lectures at the same time.
-- A classroom cannot host multiple lectures simultaneously.
-- Laboratory subjects can only be assigned to laboratory rooms.
-- Classroom capacity must be sufficient for the class.
-- Faculty availability is respected.
-- Semester lectures cannot overlap.
+Developed as an MCA academic project by **Avaneesh Chopdekar**, **Vanshaj Madeshiya**, and **Harshal Yadav**.
 
 ---
 
-## Tech Stack
+## 🌟 Key Highlights & Engineering Challenges
+
+Traditional timetable creation involves combinatorially complex constraints and tedious manual effort. Schedulix solves this with:
+
+- **Constraint-Based Scheduling Engine**: Implements deterministic and randomized greedy heuristic algorithms with in-memory occupancy tracking for conflict-free scheduling.
+- **Zero-Overlap Guarantee**: Enforces hard constraints preventing faculty double-booking, room clashes, and section lecture collisions.
+- **Resource Optimization**: Matches subject requirements (theory vs. practical lab sessions) with suitable classroom types (`CLASSROOM`, `LAB`, `SEMINAR`) and verifies room capacity against student enrollment.
+- **Role-Based Access Control (RBAC)**: Distinct dashboards and capabilities for **Admin**, **Faculty**, and **Student** roles.
+- **Dynamic Availability & Absence Handling**: Incorporates faculty availability schedules and absence notifications into scheduling logic.
+- **Audit & Change Tracking**: Tracks timetable modifications and generation histories across academic semesters.
+
+---
+
+## 🛠️ Tech Stack
 
 ### Frontend
-- React.js
-- HTML5
-- CSS3
-- Bootstrap / Material CSS / Tailwind CSS
-- JavaScript
+
+- **Framework**: React 19 with TypeScript
+- **Build Tool**: Vite
+- **UI Components**: Material UI (MUI v9+), Emotion (`@emotion/react`, `@emotion/styled`)
+- **Icons**: `@mui/icons-material`
+- **Routing**: React Router v7 (`react-router-dom`)
+- **Forms**: React Hook Form
+- **Theme**: Custom Theme Provider (Dark / Light mode support)
 
 ### Backend
-- Core PHP (REST APIs)
+
+- **Language**: PHP 8.2+
+- **Architecture**: 3-Tier Layered Architecture (Controllers → Services → Repositories → Models)
+- **Framework**: Slim Framework 4 (PSR-7 / PSR-15 micro-framework)
+- **HTTP Engine**: `slim/psr7`
+- **Environment Management**: `vlucas/phpdotenv`
+- **Authentication**: Token-based session authentication with custom `AuthMiddleware` and `RoleMiddleware`
 
 ### Database
-- MySQL
 
-### Development Tools
-- Visual Studio Code
-- XAMPP
-- Git
-- GitHub
-- Postman
+- **Engine**: MySQL 8.0+
+- **Design**: Fully normalized relational schema (17 tables with foreign key cascades and integrity constraints)
+- **Migrations**: Incremental SQL migrations (`database/migrations/`)
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
-
-schedulix/
+Schedulix/
 │
-├── client/                 # React Frontend
+├── frontend/                     # React 19 + TypeScript + Vite Frontend
+│   ├── src/
+│   │   ├── assets/               # Static assets & icons
+│   │   ├── components/           # Reusable UI components (Navbar, Sidebar, ThemeToggle, etc.)
+│   │   ├── context/              # React Contexts (AuthContext, ThemeContext)
+│   │   ├── layouts/              # DashboardLayout and PublicLayout
+│   │   ├── pages/
+│   │   │   ├── admin/            # Admin CRUD & Timetable management pages
+│   │   │   ├── faculty/          # Faculty dashboard & schedule views
+│   │   │   ├── student/          # Student dashboard & class timetables
+│   │   │   └── auth/             # Login, Register, Password Reset pages
+│   │   ├── services/             # Axios/fetch API clients (authApi, crudApi)
+│   │   ├── utils/                # Helper utilities & mock data fallbacks
+│   │   ├── App.tsx               # Root route declarations & RBAC protection
+│   │   └── main.tsx              # React DOM entrypoint & theme wrappers
+│   ├── package.json
+│   └── vite.config.ts
 │
-├── server/
+├── server/                       # Slim 4 REST API Backend (PHP 8)
 │   ├── api/
+│   │   ├── index.php             # API entry point & Slim initialization
+│   │   └── routes.php            # REST route declarations
 │   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── services/
-│   └── routes/
+│   │   ├── database.php          # PDO database connection configuration
+│   │   └── auth.php              # Auth & session security settings
+│   ├── controllers/              # HTTP request & response handlers
+│   ├── middleware/               # AuthMiddleware, RoleMiddleware
+│   ├── models/                   # Domain entities & data transfer objects
+│   ├── repositories/             # PDO-based SQL data persistence layer
+│   ├── services/                 # Core business logic & TimetableGenerationService
+│   └── composer.json             # PHP dependencies
 │
-├── database/
-│   ├── schema.sql
-│   └── seed.sql
+├── database/                     # Database setup & versioning
+│   ├── schema.sql                # Complete baseline DDL schema
+│   ├── seed.sql                  # Comprehensive demo & testing dataset
+│   └── migrations/               # Incremental schema migration scripts
 │
-├── docs/
-│   ├── SRS.pdf
-│   ├── ERD.pdf
-│   └── Diagrams/
+├── docs/                         # Project documentation, SRS, ERD diagrams
+│   └── Schedulix.docx            # Detailed academic project documentation
 │
-├── README.md
-│
-└── .gitignore
-
-````
+└── README.md
+```
 
 ---
 
-## Database Modules
+## ⚡ Core Modules & Features
 
-### User Module
-- Users
-- Roles
+### 1. Authentication & Security
 
-### Academic Module
-- Departments
-- Programs
-- Semesters
-- Teachers
-- Subjects
-- TeacherSubject Mapping
+- Secure token-based session management (`users`, `user_sessions`).
+- Role-Based Access Control (`ADMIN`, `FACULTY`, `STUDENT`).
+- Password reset token flow (`password_reset_tokens`).
 
-### Resource Module
-- Buildings
-- Classrooms
-- Laboratories
+### 2. Academic & Resource Management
 
-### Timetable Module
-- Timetables
-- Time Slots
-- Lectures
-- Scheduling Constraints
+- **Departments & Programs**: Manage academic divisions.
+- **Faculty Management**: Track employee designations, employment types, and departments.
+- **Student & Section Directory**: Student enrollment by section, semester, and academic year.
+- **Subject Catalog**: Subject codes, lecture counts per week, credit weightage, and type (`THEORY` vs. `PRACTICAL`).
+- **Subject-Section Mapping**: Assign which sections study which subjects.
+- **Classroom Allocation**: Capacity tracking and specialized room types (`CLASSROOM`, `LAB`, `SEMINAR`).
+- **Time Slots**: Configurable periods per day, day-wise slots, and break markers.
 
----
+### 3. Constraint-Based Timetable Generation
 
-## Engineering Challenges
+- **Automated Scheduler**:
+  - Deterministic Greedy Heuristic (balances weekday distribution).
+  - Randomized Greedy Heuristic (supports varied seeds for alternate generation options).
+- **Hard Constraints Enforced**:
+  1. **Teacher Conflict**: A faculty member cannot teach two lectures simultaneously.
+  2. **Room Conflict**: A room cannot host more than one session at a time.
+  3. **Room Capability**: Practical/Lab subjects must strictly be scheduled in laboratory rooms.
+  4. **Capacity Validation**: Classroom capacity must accommodate section student size.
+  5. **Faculty Availability**: Honors predefined teacher availability slots and active absence records.
+  6. **Section Overlap**: A student section cannot have overlapping lectures.
 
-This project focuses on solving real-world scheduling problems rather than only implementing CRUD operations.
+### 4. Interactive Timetable Operations
 
-The system addresses:
-
-- Scheduling conflicts
-- Resource optimization
-- Faculty availability validation
-- Classroom allocation
-- Constraint-based timetable generation
-- Timetable consistency
-- Data normalization
+- **Interactive Grid**: Weekly visual grid display categorized by days and time slots.
+- **Manual Adjustment & Overrides**: Admins can edit generated allocations to accommodate edge cases.
+- **Audit Trail**: Real-time logging of manual timetable modifications (`timetable_changes`).
+- **Targeted Views**: Personalized views tailored for students and individual faculty members.
 
 ---
 
-## Future Enhancements
+## 🔌 API Reference Overview
 
-- Automatic timetable generation using backtracking or greedy algorithms
-- Drag-and-drop timetable editor
-- Email notifications
-- PDF timetable export
-- Attendance integration
-- Calendar synchronization
-- Multi-campus support
-- Analytics dashboard
+| Endpoint                     | Method                         | Role          | Description                                     |
+| ---------------------------- | ------------------------------ | ------------- | ----------------------------------------------- |
+| `/api/health`                | `GET`                          | Public        | System health check                             |
+| `/api/auth/login`            | `POST`                         | Public        | Authenticate user & issue session token         |
+| `/api/auth/register`         | `POST`                         | Public        | Register new user account                       |
+| `/api/auth/me`               | `GET`                          | Authenticated | Fetch active user session profile               |
+| `/api/auth/logout`           | `POST`                         | Authenticated | Invalidate active user session                  |
+| `/api/departments`           | `GET`, `POST`                  | Admin         | Manage academic departments                     |
+| `/api/teachers`              | `GET`, `POST`, `PUT`, `DELETE` | Admin         | Manage faculty records                          |
+| `/api/students`              | `GET`, `POST`, `PUT`, `DELETE` | Admin         | Manage student profiles & section links         |
+| `/api/sections`              | `GET`, `POST`, `PUT`, `DELETE` | Admin         | Manage academic sections & capacities           |
+| `/api/subjects`              | `GET`, `POST`, `PUT`, `DELETE` | Admin         | Manage course subjects & room requirements      |
+| `/api/subject-sections`      | `GET`, `POST`, `DELETE`        | Admin         | Map subjects to sections                        |
+| `/api/classrooms`            | `GET`, `POST`, `PUT`, `DELETE` | Admin         | Manage classrooms, types, and capacities        |
+| `/api/time-slots`            | `GET`, `POST`, `PUT`, `DELETE` | Admin         | Configure academic periods & breaks             |
+| `/api/teacher-availability`  | `GET`, `POST`, `PUT`, `DELETE` | Admin/Faculty | Set faculty available time slots                |
+| `/api/teacher-absences`      | `GET`, `POST`                  | Admin/Faculty | Log faculty leaves & unavailability             |
+| `/api/timetable/generate`    | `POST`                         | Admin         | Execute constraint-based timetable generation   |
+| `/api/timetable/generations` | `GET`, `DELETE`                | Admin         | View history of generated timetable runs        |
+| `/api/timetable`             | `GET`, `POST`, `PUT`, `DELETE` | Authenticated | Read, create, update, or remove timetable cells |
+| `/api/timetable/changes`     | `GET`                          | Admin         | Audit trail of manual schedule modifications    |
 
 ---
 
-## Installation
+## 🚀 Installation & Local Setup
 
 ### Prerequisites
 
-- PHP 8+
-- MySQL 8+
-- Node.js 20+
-- npm
-- XAMPP (or Apache + PHP)
-- Git
-
-### Clone Repository
-
-```bash
-git clone https://github.com/Avaneesh-Chopdekar/Schedulix.git
-````
-
-### Frontend
-
-```bash
-cd client
-npm install
-npm run dev
-```
-
-### Backend
-
-Move the `server` folder to your XAMPP `htdocs` directory (or configure Apache accordingly).
-
-Example:
-
-```
-xampp/htdocs/schedulix/server/
-```
-
-Create a MySQL database.
-
-Import:
-
-```
-database/schema.sql
-```
-
-Update your database configuration:
-
-```
-server/config/database.php
-```
-
-Start Apache and MySQL.
+- **Node.js**: v20.x or later & `npm`
+- **PHP**: v8.2 or higher with `pdo_mysql` extension enabled
+- **Composer**: PHP dependency manager
+- **Database**: MySQL 8.0+ (or MariaDB 10.5+)
+- **Web Server** _(Optional)_: Apache / XAMPP or PHP built-in CLI server
 
 ---
 
-## API Modules
+### 1. Database Setup
 
-```
-/api/auth
-/api/users
-/api/teachers
-/api/departments
-/api/programs
-/api/semesters
-/api/subjects
-/api/classrooms
-/api/timeslots
-/api/timetable
-```
-
----
-
-## Project Status
-
-Current Phase:
-
-* [x] Project Planning
-* [x] Software Requirements Specification
-* [x] Entity Relationship Diagram
-* [ ] Database Implementation
-* [ ] Backend APIs
-* [ ] React Frontend
-* [ ] Constraint Validation Engine
-* [ ] Timetable Generation
-* [ ] Testing
-* [ ] Documentation
+1. Start your MySQL service.
+2. Create the database:
+   ```sql
+   CREATE DATABASE schedulix CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   ```
+3. Import the base schema and initial seeds:
+   ```bash
+   mysql -u root -p schedulix < database/schema.sql
+   mysql -u root -p schedulix < database/seed.sql
+   ```
+4. Apply any pending incremental migrations:
+   ```bash
+   for file in database/migrations/*.sql; do
+       mysql -u root -p schedulix < "$file"
+   done
+   ```
 
 ---
 
-## Contributors
+### 2. Backend Setup (Server)
 
-* Avaneesh Chopdekar
-* Vanshaj Madeshiya
-* Harshal Yadav
+1. Navigate to the server folder:
+   ```bash
+   cd server
+   ```
+2. Install PHP dependencies:
+   ```bash
+   composer install
+   ```
+3. Configure environment variables by creating `.env` in `server/`:
+   ```env
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_NAME=schedulix
+   DB_USER=root
+   DB_PASS=your_password
+   APP_ENV=development
+   ```
+4. Start the backend server:
+   ```bash
+   # Using PHP's built-in development server:
+   php -S 127.0.0.1:8000 -t api
+   ```
+   _The API will be available at `http://127.0.0.1:8000/api`._
 
 ---
 
-## License
+### 3. Frontend Setup (Client)
 
-This project is developed for academic purposes as part of the MCA curriculum.
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the Vite development server:
+   ```bash
+   npm run dev
+   ```
+4. Open your browser and navigate to `http://localhost:5173`.
 
 ---
 
-## Acknowledgements
+## 📊 Project Status
 
-* Faculty members for project guidance
-* Open-source community
-* React
-* PHP
-* MySQL
+- [x] Requirement Analysis & SRS
+- [x] Relational Database Modeling & ER Diagrams
+- [x] Normalized MySQL Schema & Migration Scripts
+- [x] Slim Framework 4 Backend REST APIs
+- [x] Role-Based Access Control (Admin, Faculty, Student)
+- [x] React 19 + TypeScript + MUI Responsive Dashboard
+- [x] Constraint-Based Greedy Timetable Generation Engine
+- [x] Manual Timetable Editor & Conflict Audit Logging
+- [x] Faculty Absence & Availability Management
+- [x] Academic Project Documentation
 
+---
+
+## 👥 Contributors
+
+- **Avaneesh Chopdekar** ([@Avaneesh-Chopdekar](https://github.com/Avaneesh-Chopdekar))
+- **Vanshaj Madeshiya** ([@VANSSSH](https://github.com/VANSSSH))
+- **Harshal Yadav** ([@yharryshall](https://github.com/yharryshall))
+
+---
+
+## 📄 License & Acknowledgements
+
+Developed as part of the Master of Computer Applications (MCA) academic curriculum.  
+Special thanks to academic project guides, faculty mentors, and the open-source software community.
