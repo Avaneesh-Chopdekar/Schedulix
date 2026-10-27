@@ -3,7 +3,7 @@
         'name' => 'schedulix/server',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'b4f119cef005f21dea4dd71dd5c9497cb661ff2a',
+        'reference' => 'a3b7dba03cfb220ee10529045f74cecb97a7cd8b',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -124,7 +124,7 @@
         'schedulix/server' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'b4f119cef005f21dea4dd71dd5c9497cb661ff2a',
+            'reference' => 'a3b7dba03cfb220ee10529045f74cecb97a7cd8b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

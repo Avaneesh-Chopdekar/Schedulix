@@ -104,8 +104,8 @@ export default function DashboardPage() {
 
   return (
     <Box>
-      <Typography variant="h4" sx={{ fontWeight: 700 }}>Dashboard</Typography>
-      <Typography color="text.secondary" sx={{ mb: 4 }}>A live overview of your academic timetable and teaching assignments.</Typography>
+      <Typography variant="h4" sx={{ fontWeight: 700, fontSize: { xs: "1.75rem", sm: "2.125rem" } }}>Dashboard</Typography>
+      <Typography color="text.secondary" sx={{ mb: 3 }}>A live overview of your academic timetable and teaching assignments.</Typography>
       {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
 
       <Grid container spacing={3}>

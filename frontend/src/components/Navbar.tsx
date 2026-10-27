@@ -62,11 +62,16 @@ function Navbar({ onMenuClick }: NavbarProps) {
         borderColor: "divider",
       }}
     >
-      <Toolbar sx={{ justifyContent: "flex-end", px: { xs: 1.5, sm: 3 } }}>
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: { xs: 0.75, sm: 2 }, minWidth: 0 }}>
+      <Toolbar sx={{ justifyContent: "space-between", px: { xs: 1.5, sm: 3 } }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <IconButton onClick={onMenuClick} sx={{ display: { xs: "inline-flex", md: "none" } }} aria-label="Open navigation menu">
             <Menu />
           </IconButton>
+          <Typography variant="h6" sx={{ fontWeight: 700, display: { xs: "none", sm: "block" } }}>
+            Schedulix
+          </Typography>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: { xs: 0.75, sm: 2 }, minWidth: 0 }}>
           <IconButton
             onClick={(event) => setNotificationAnchor(event.currentTarget)}
             aria-label="Open notifications"
