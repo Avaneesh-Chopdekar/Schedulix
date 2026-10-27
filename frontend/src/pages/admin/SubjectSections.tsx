@@ -6,16 +6,23 @@ import {
   TableContainer, TableHead, TableRow, TextField, Typography,
 } from "@mui/material";
 import {
-  deleteSubjectSection, getSubjectSections, type SubjectSection,
+  deleteSubjectSection, getSections, getSubjectSections, getSubjects, type Section, type Subject, type SubjectSection,
 } from "../../services/crudApi";
 
 export default function SubjectSections() {
   const [mappings, setMappings] = useState<SubjectSection[]>([]);
+  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [sections, setSections] = useState<Section[]>([]);
   const [search, setSearch] = useState("");
   const [error, setError] = useState("");
 
   async function load() {
-    try { setMappings(await getSubjectSections()); } catch (e) {
+    try {
+      const [mappingsData, subjectsData, sectionsData] = await Promise.all([getSubjectSections(), getSubjects(), getSections()]);
+      setMappings(mappingsData);
+      setSubjects(subjectsData);
+      setSections(sectionsData);
+    } catch (e) {
       setError(e instanceof Error ? e.message : "Unable to load assignments.");
     }
   }
@@ -28,8 +35,11 @@ export default function SubjectSections() {
     }
   }
 
+  const subjectName = (id: number) => subjects.find((s) => s.subject_id === id)?.subject_name ?? `Subject #${id}`;
+  const sectionName = (id: number) => sections.find((s) => s.section_id === id)?.section_name ?? `Section #${id}`;
+
   const filtered = mappings.filter((mapping) =>
-    `${mapping.subject_id} ${mapping.section_id}`.includes(search.trim()),
+    `${mapping.subject_id} ${mapping.section_id} ${subjectName(mapping.subject_id)} ${sectionName(mapping.section_id)}`.toLowerCase().includes(search.toLowerCase()),
   );
 
   return <Box>
@@ -40,11 +50,11 @@ export default function SubjectSections() {
       <Button component={Link} to="/admin/subject-sections/add" variant="contained" startIcon={<Add />}>Assign Subject</Button>
     </Box>
     {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
-    <Paper sx={{ p: 2, mb: 2 }}><TextField fullWidth size="small" placeholder="Search by subject or section ID..." value={search} onChange={(e) => setSearch(e.target.value)} slotProps={{ input: { startAdornment: <Search sx={{ mr: 1 }} /> } }} /></Paper>
+    <Paper sx={{ p: 2, mb: 2 }}><TextField fullWidth size="small" placeholder="Search by subject or section name..." value={search} onChange={(e) => setSearch(e.target.value)} slotProps={{ input: { startAdornment: <Search sx={{ mr: 1 }} /> } }} /></Paper>
     <TableContainer component={Paper}><Table>
-      <TableHead><TableRow>{["Mapping ID", "Subject ID", "Section ID", "Actions"].map((heading) => <TableCell key={heading}><strong>{heading}</strong></TableCell>)}</TableRow></TableHead>
+      <TableHead><TableRow>{["Mapping ID", "Subject", "Section", "Actions"].map((heading) => <TableCell key={heading}><strong>{heading}</strong></TableCell>)}</TableRow></TableHead>
       <TableBody>{filtered.map((mapping) => <TableRow key={mapping.subject_section_id}>
-        <TableCell>{mapping.subject_section_id}</TableCell><TableCell>{mapping.subject_id}</TableCell><TableCell>{mapping.section_id}</TableCell>
+        <TableCell>{mapping.subject_section_id}</TableCell><TableCell>{subjectName(mapping.subject_id)}</TableCell><TableCell>{sectionName(mapping.section_id)}</TableCell>
         <TableCell><IconButton component={Link} to={`/admin/subject-sections/edit/${mapping.subject_section_id}`} color="primary"><Edit /></IconButton><IconButton color="error" onClick={() => void handleDelete(mapping.subject_section_id)}><Delete /></IconButton></TableCell>
       </TableRow>)}</TableBody>
     </Table></TableContainer>

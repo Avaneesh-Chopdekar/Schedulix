@@ -101,10 +101,15 @@ export default function Timetable() {
         slot?.is_break ? "Break" : entry ? "Scheduled" : "Free",
       ]);
     }));
-    // Tab-separated .xls is natively opened by Excel and avoids browsers
-    // displaying the old HTML table markup as plain text.
-    const content = `\uFEFF${rows.map((row) => row.map((value) => value.replaceAll("\t", " ").replaceAll("\n", " ")).join("\t")).join("\n")}`;
-    download(`timetable-${sectionId || "all"}.xls`, content, "application/vnd.ms-excel;charset=utf-8");
+    const escapeCsv = (value: string) => {
+      const stringValue = String(value ?? "");
+      if (stringValue.includes(",") || stringValue.includes("\"") || stringValue.includes("\n") || stringValue.includes("\r")) {
+        return `"${stringValue.replaceAll("\"", "\"\"")}"`;
+      }
+      return stringValue;
+    };
+    const content = `\uFEFF${rows.map((row) => row.map((value) => escapeCsv(value)).join(",")).join("\r\n")}`;
+    download(`timetable-${sectionId || "all"}.csv`, content, "text/csv;charset=utf-8");
   }
   function exportImage() {
     const cw = 220; const tw = 115; const rh = 78; const width = tw + cw * days.length;
@@ -142,7 +147,7 @@ export default function Timetable() {
   return <Box>
     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3, gap: 2, flexWrap: "wrap" }}>
       <Box><Typography variant="h4" sx={{ fontWeight: 700 }}>Timetable</Typography><Typography color="text.secondary">Readable weekly schedule with lunch breaks and room details.</Typography></Box>
-      <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}><Button variant="contained" startIcon={<Refresh />} onClick={() => void generate()} disabled={generating}>{generating ? "Generating..." : "Generate"}</Button><Button variant="outlined" startIcon={<Download />} onClick={exportExcel}>Excel</Button><Button variant="outlined" onClick={exportImage}>Image</Button></Box>
+      <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}><Button variant="contained" startIcon={<Refresh />} onClick={() => void generate()} disabled={generating}>{generating ? "Generating..." : "Generate"}</Button><Button variant="outlined" startIcon={<Download />} onClick={exportExcel}>CSV</Button><Button variant="outlined" onClick={exportImage}>Image</Button></Box>
     </Box>
     {error && <Typography color="error" sx={{ mb: 2 }}>{error}</Typography>}
     {notice && <Typography color="success.main" sx={{ mb: 2 }}>{notice}</Typography>}

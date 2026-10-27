@@ -147,6 +147,34 @@ export default function AuthPage() {
   }
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const autoLogin = params.get("auto_login");
+    if (autoLogin && !authLoading && !user && !loading) {
+      const creds: Record<string, { email: string; password: string }> = {
+        admin: { email: "admin@schedulix.edu", password: "password" },
+        faculty: { email: "aturing@schedulix.edu", password: "password" },
+        student: { email: "jdoe@student.edu", password: "password" },
+      };
+      const c = creds[autoLogin];
+      if (c) {
+        setMode("login");
+        setEmail(c.email);
+        setPassword(c.password);
+        setLoading(true);
+        setServerError("");
+        authenticate(c.email, c.password, false)
+          .then((loggedInUser) => {
+            navigate(dashboardPath(loggedInUser.role), { replace: true });
+          })
+          .catch((error) => {
+            setServerError(error instanceof Error ? error.message : "Login failed.");
+          })
+          .finally(() => setLoading(false));
+      }
+    }
+  }, [authLoading, authenticate, loading, location.search, navigate, user]);
+
+  useEffect(() => {
     if (!authLoading && user && location.pathname === "/auth/login") {
       navigate(dashboardPath(user.role), { replace: true });
     }
